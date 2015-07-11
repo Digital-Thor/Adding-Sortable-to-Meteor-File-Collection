@@ -33,51 +33,59 @@
           <th>Type</th>
           <th>Checksum</th>
           <th>Preview</th>
+          <th>Order</th>
         </tr>
       </thead>
-      <tbody>
-      {{#each dataEntries}}
-        <tr>
-          <td>
-            <a href="{{link}}?download=true">{{shortFilename 16}}</a>
-            <button type="button" class="close del-file" aria-hidden="true">&times;</button>
-          </td>
-          <td>{{id}}</td>
-          <td>
-          	{{#if owner}}
-          		{{owner}}
-          	{{else}}
-          		<span class="text-muted">No owner</span>
-          	{{/if}}
-          </td>
-          <td>
-            {{#if length}}
-              {{formattedLength}}
-            {{else}}
-              {{uploadStatus}}
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" min-width="60px" aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadProgress}}%;">
-                    <span class="text-muted">{{uploadProgress}}%</span>
-                </div>
-              </div>
-            {{/if}}
-          </td>
-          <td>{{contentType}}</td>
-          <td>{{md5}}</td>
-          <td>
-            {{#if isImage}}
-                <a href="{{link}}"><img class="img-thumbnail" alt="[ preview of {{shortFilename 16}} will display here ]" src="{{link}}" width="150"></a>
-            {{else}}
-               <span class="text-muted">No preview</span>
-            {{/if}}
-          </td>
-        </tr>
-      {{else}}
-        <tr><td colspan="20" align=center>
-          <span class="text-info">No files in collection, drag one here to upload</span>
-        </td></tr>
-      {{/each}}
+      <tbody id="fileTable" class="sortable">
+      {{#sortable items=dataEntries animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=sortableOptions}}
+        {{> sortableRow }}
+      <!--{{else}}-->
+        <!--<tr><td colspan="20" align=center>-->
+          <!--<span class="text-info">No files in collection, drag one here to upload</span>-->
+        <!--</td></tr>-->
+      {{/sortable}}
       </tbody>
     </table>
   </div>
+</template>
+
+<template name="sortableRow">
+  <tr>
+    <td>
+      <a href="{{link}}?download=true">{{shortFilename 16}}</a>
+      <button type="button" class="close del-file" aria-hidden="true">&times;</button>
+    </td>
+    <td>{{id}}</td>
+    <td>
+      {{#if owner}}
+        {{owner}}
+      {{else}}
+        <span class="text-muted">No owner</span>
+      {{/if}}
+    </td>
+    <td>
+      {{#if length}}
+        {{formattedLength}}
+      {{else}}
+        {{uploadStatus}}
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" min-width="60px" aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadProgress}}%;">
+            <span class="text-muted">{{uploadProgress}}%</span>
+          </div>
+        </div>
+      {{/if}}
+    </td>
+    <td>{{contentType}}</td>
+    <td>{{md5}}</td>
+    <td>
+      {{#if isImage}}
+        <a href="{{link}}"><img class="img-thumbnail" alt="[ preview of {{shortFilename 16}} will display here ]" src="{{link}}" width="150"></a>
+      {{else}}
+        <span class="text-muted">No preview</span>
+      {{/if}}
+    </td>
+    <td class="sortable-parent ">
+      <div class="sortable-handle glyphicon glyphicon-menu-hamburger"></div>
+    </td>
+  </tr>
 </template>

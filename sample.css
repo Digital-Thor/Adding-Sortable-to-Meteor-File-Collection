@@ -20,3 +20,17 @@ body {
   top: 20px;
   right: 20px;
 }
+
+.sortable-parent {
+  vertical-align: middle !important;
+  font-size: 2.5em;
+  color:darkgray;
+}
+
+.sortable-handle {
+  cursor: ns-resize;
+}
+
+.sortable-ghost {
+  opacity: 0.6;
+}

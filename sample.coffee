@@ -6,6 +6,8 @@
 
 # Both client and server
 
+Sortable.collections = [ 'fs.files' ]
+
 # Default collection name is 'fs'
 myData = FileCollection({
    resumable: true,     # Enable the resumable.js compatible chunked file upload interface
@@ -77,18 +79,18 @@ if Meteor.isClient
       else
          name
 
-   Template.collTest.events
+   Template.sortableRow.events
       # Wire up the event to remove a file by clicking the `X`
       'click .del-file': (e, t) ->
          # Just the remove method does it all
          myData.remove {_id: this._id}
 
    Template.collTest.helpers
-
       dataEntries: () ->
          # Reactively populate the table
          myData.find({})
 
+   Template.sortableRow.helpers
       shortFilename: (w = 16) ->
          if this.filename?.length
             shorten this.filename, w
