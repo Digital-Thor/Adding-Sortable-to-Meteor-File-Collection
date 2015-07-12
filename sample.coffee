@@ -6,8 +6,6 @@
 
 # Both client and server
 
-Sortable.collections = [ 'fs.files' ]
-
 # Default collection name is 'fs'
 myData = FileCollection({
    resumable: true,     # Enable the resumable.js compatible chunked file upload interface
@@ -39,6 +37,7 @@ if Meteor.isClient
                _id: file.uniqueIdentifier    # This is the ID resumable will use
                filename: file.fileName
                contentType: file.file.type
+#              This feels like the right place to set/add the order index to the file
             },
             (err, _id) ->
                if err
@@ -88,7 +87,7 @@ if Meteor.isClient
    Template.collTest.helpers
       dataEntries: () ->
          # Reactively populate the table
-         myData.find({})
+         myData.find({}, { sort: { order: 1 } })
 
    Template.sortableRow.helpers
       shortFilename: (w = 16) ->
@@ -99,6 +98,9 @@ if Meteor.isClient
 
       owner: () ->
          this.metadata?._auth?.owner
+
+      orderHelper: () ->
+         this.order
 
       id: () ->
          "#{this._id}"
@@ -140,6 +142,8 @@ if Meteor.isClient
 
 if Meteor.isServer
 
+   Sortable.collections = [ 'fs.files' ]
+
    Meteor.startup () ->
 
       # Only publish files owned by this userId, and ignore temp file chunks used by resumable
@@ -162,6 +166,8 @@ if Meteor.isServer
             file.metadata = file.metadata ? {}
             file.metadata._auth =
                owner: userId
+            # file.metadata.order = null       # I tried initializing the order field in metadata, but it didn't help
+            file.order = null   # so switched approach to put it at a peer level to other fields. But no progress.
             true
          remove: (userId, file) ->
             # Only owners can delete

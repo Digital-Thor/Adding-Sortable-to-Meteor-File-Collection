@@ -1,13 +1,13 @@
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>fileCollection test app</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>fileCollection test app</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
 </head>
 <body>
 <div id="fileDropID">
-{{> collTest}}
+  {{> collTest}}
 </div>
 </body>
 
@@ -25,24 +25,25 @@
   <div class="container panel fileDrop">
     <table class="table table-bordered table-striped">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>ID</th>
-          <th>Owner</th>
-          <th>Size</th>
-          <th>Type</th>
-          <th>Checksum</th>
-          <th>Preview</th>
-          <th>Order</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Owner</th>
+        <th>Size</th>
+        <th>Type</th>
+        <th>Checksum</th>
+        <th>Preview</th>
+        <th>
+          Order<br>Index
+        </th>
+        <th>
+          Drag&nbsp;Up<br>or&nbsp;Down
+        </th>
+      </tr>
       </thead>
       <tbody id="fileTable" class="sortable">
-      {{#sortable items=dataEntries animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=sortableOptions}}
+      {{#sortable items=dataEntries options=sortableOptions}}
         {{> sortableRow }}
-      <!--{{else}}-->
-        <!--<tr><td colspan="20" align=center>-->
-          <!--<span class="text-info">No files in collection, drag one here to upload</span>-->
-        <!--</td></tr>-->
       {{/sortable}}
       </tbody>
     </table>
@@ -50,7 +51,7 @@
 </template>
 
 <template name="sortableRow">
-  <tr>
+  <tr class="sortable-child">
     <td>
       <a href="{{link}}?download=true">{{shortFilename 16}}</a>
       <button type="button" class="close del-file" aria-hidden="true">&times;</button>
@@ -69,7 +70,8 @@
       {{else}}
         {{uploadStatus}}
         <div class="progress">
-          <div class="progress-bar" role="progressbar" min-width="60px" aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadProgress}}%;">
+          <div class="progress-bar" role="progressbar" min-width="60px" aria-valuenow="{{uploadProgress}}"
+               aria-valuemin="0" aria-valuemax="100" style="width: {{uploadProgress}}%;">
             <span class="text-muted">{{uploadProgress}}%</span>
           </div>
         </div>
@@ -79,11 +81,13 @@
     <td>{{md5}}</td>
     <td>
       {{#if isImage}}
-        <a href="{{link}}"><img class="img-thumbnail" alt="[ preview of {{shortFilename 16}} will display here ]" src="{{link}}" width="150"></a>
+        <a href="{{link}}"><img class="img-thumbnail" alt="[ preview of {{shortFilename 16}} will display here ]"
+                                src="{{link}}" width="150"></a>
       {{else}}
         <span class="text-muted">No preview</span>
       {{/if}}
     </td>
+    <td>{{orderHelper}}</td>
     <td class="sortable-parent ">
       <div class="sortable-handle glyphicon glyphicon-menu-hamburger"></div>
     </td>
