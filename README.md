@@ -1,10 +1,14 @@
 #Adding Sortable to Meteor File Collection 
-### Work-in-Progress to re-order rows in [Meteor File Collection (MFC) Sample App](https://github.com/vsivsi/meteor-file-sample-app)
-### Using drag-and-drop sorting provided by [Rubaxa Sortable for Meteor](https://github.com/RubaXa/Sortable/tree/master/meteor).
+Work-in-Progress to re-order rows in [Meteor File Collection (MFC) Sample App](https://github.com/vsivsi/meteor-file-sample-app) 
+using drag-and-drop sorting provided by [Rubaxa Sortable for Meteor](https://github.com/RubaXa/Sortable/tree/master/meteor).
 
-## Description of progress so far
+## Update (12 July 2015)
 
-11 July 2015 - I forked Meteor File Collection Sample App and added Sortable hooks by 
+Please see the [situation assessment](https://github.com/vsivsi/meteor-file-sample-app/issues/2#issuecomment-120780592) by the Meteor File Collection Author.
+
+## Description of progress so far (11 July 2015)
+
+I forked Meteor File Collection Sample App and added Sortable hooks by 
 following instructions at [Rubaxa Sortable for Meteor](https://github.com/RubaXa/Sortable/tree/master/meteor)
 including suggested approach of using `{{#sortable items=<cursor> options=myOptions}}`.  Rubaxa has created `#sortable` to replace `#each` 
 and I moved the row HTML (from the MFC Sample App) into a new template called `sortableRow` as follows:
@@ -27,10 +31,10 @@ Finally, I also added two columns to the MFC Sample App.
 
 
 ## What works
-I am able to drag one row to a new position.  Unfortunately, I then get the following client console error. 
+I am able to drag one row to a new position.  Unfortunately, I then encountered the following problems. 
 
 ## Problems
-### Error
+### 1. Error in Client Console
 Error: Uncaught TypeError: Cannot read property 'findOne' of undefined
 
 Source: [Reactivize.js:95](https://github.com/RubaXa/Sortable/blob/master/meteor/reactivize.js#L95)
@@ -43,7 +47,7 @@ Source: [Reactivize.js:95](https://github.com/RubaXa/Sortable/blob/master/meteor
 
 Although `templateInstance.options` exists and yields the correct sortField, `templateInstance.collection` is undefined.
 
-### Where to put and how to update the order index
+### 2. Where to put and how to update the order index
 Also, the order index is not populated with values in my integration however the Rubaxa demo orders the values when items 
 are added to the collection.  That seems a clue that I've not enabled `inserts` or `updates` properly, but I'm a bit lost 
 in the Rubaxa code.  I've tried putting the order index at different nesting depths of the collection (as commented in my code), 
