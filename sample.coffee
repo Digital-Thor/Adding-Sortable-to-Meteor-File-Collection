@@ -6,6 +6,10 @@
 
 # Both client and server
 
+# Monkey-patch the monkey-patch before initializing file-collection.
+# https://github.com/vsivsi/meteor-file-sample-app/issues/2#issuecomment-120780592
+Mongo.Collection.prototype.constructor = Mongo.Collection
+
 # Default collection name is 'fs'
 myData = FileCollection({
    resumable: true,     # Enable the resumable.js compatible chunked file upload interface
