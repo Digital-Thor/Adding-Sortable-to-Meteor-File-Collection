@@ -4,7 +4,7 @@
 
 Template.collTest.helpers({
   sortableOptions: {
-    sortField: 'metadata.sortable.order',
+    sortField: 'order',
     animation: 100,
     handle: ".sortable-handle",
     ghostClass: "sortable-ghost",

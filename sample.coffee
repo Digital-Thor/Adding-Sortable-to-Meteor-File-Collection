@@ -109,7 +109,7 @@ if Meteor.isClient
          this.metadata?._auth?.owner
 
       orderHelper: () ->
-         this.metadata?.sortable?.order
+         this.order
 
       id: () ->
          "#{this._id}"
@@ -175,16 +175,15 @@ if Meteor.isServer
             file.metadata = file.metadata ? {}
             file.metadata._auth =
                owner: userId
-            file.metadata.sortable = file.metadata.sortable ? {}
 
             max = myData.findOne {},
                sort:
-                  'metadata.sortable.order': -1
+                  'order': -1
                fields:
                   _id: 0
-                  'metadata.sortable.order': 1
+                  'order': 1
 
-            file.metadata.sortable.order = file.metadata.sortable.order ? (max?.metadata?.sortable?.order || 0) + 1
+            file.order = file.order ? (max?.order || 0) + 1
             true
          remove: (userId, file) ->
             # Only owners can delete
