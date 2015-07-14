@@ -7,10 +7,10 @@ standard-app-packages
 coffeescript
 accounts-ui
 accounts-password
+vsivsi:defender
 twbs:bootstrap
 benjaminrh:jquery-cookie
 numeral:numeral
 # Sortable needs to be loaded before file-collection https://github.com/vsivsi/meteor-job-collection/issues/58
 rubaxa:sortable
 vsivsi:file-collection
-
