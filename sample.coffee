@@ -6,6 +6,8 @@
 
 # Both client and server
 
+Defender.check();
+
 # Monkey-patch the monkey-patch before initializing file-collection.
 # https://github.com/vsivsi/meteor-file-sample-app/issues/2#issuecomment-120780592
 Mongo.Collection.prototype.constructor = Mongo.Collection
@@ -13,16 +15,19 @@ Mongo.Collection.prototype.constructor = Mongo.Collection
 # Default collection name is 'fs'
 myData = FileCollection({
    resumable: true,     # Enable the resumable.js compatible chunked file upload interface
-   resumableIndexName: 'test',  # Don't use the default MongoDB index name, which is 94 chars long  
+   resumableIndexName: 'test',  # Don't use the default MongoDB index name, which is 94 chars long
    http: [ { method: 'get', path: '/md5/:md5', lookup: (params, query) -> return { md5: params.md5 }}]}
    # Define a GET API that uses the md5 sum id files
 )
+
 
 ############################################################
 # Client-only code
 ############################################################
 
 if Meteor.isClient
+
+   myData.update = myData.localUpdate
 
    Meteor.startup () ->
 
@@ -170,8 +175,15 @@ if Meteor.isServer
             file.metadata = file.metadata ? {}
             file.metadata._auth =
                owner: userId
-            # file.metadata.order = null       # I tried initializing the order field in metadata, but it didn't help
-            file.order = null   # so switched approach to put it at a peer level to other fields. But no progress.
+
+            max = myData.findOne {},
+               sort:
+                  'order': -1
+               fields:
+                  _id: 0
+                  'order': 1
+
+            file.order = file.order ? (max?.order || 0) + 1
             true
          remove: (userId, file) ->
             # Only owners can delete
